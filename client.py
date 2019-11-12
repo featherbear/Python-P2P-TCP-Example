@@ -2,7 +2,9 @@ SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 1234
 
 import socket
+
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 print(f"Connecting to RELAY SERVER @ {SERVER_HOST}:{SERVER_PORT}...\n")
 client.connect((SERVER_HOST, SERVER_PORT))
@@ -10,6 +12,8 @@ client.connect((SERVER_HOST, SERVER_PORT))
 print("> Local connection to RELAY SERVER:", client.getsockname())
 
 myServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+myServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
 myServer.bind(client.getsockname())
 myServer.listen()
 assert client.getsockname() == myServer.getsockname()
